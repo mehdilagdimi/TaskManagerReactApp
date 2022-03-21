@@ -73,7 +73,7 @@ function App() {
   const salutation = "React";
   return (
     <div className="container">
-      <Header showAdd={() => setShowAddTask(!showAddTask)} param="Online Application" />
+      <Header showAddTask ={showAddTask} showAdd={() => setShowAddTask(!showAddTask)} param="Online Application" />
       {showAddTask && <AddTask onAdd={addTask} />}
       <h2>Hello {salutation}</h2>
       {tasks.length > 0 ? (
