@@ -16,7 +16,7 @@ import Button from "./Button";
 //   )
 // }
 
-const Header = ({ param, showAdd, showAddTask }) => {
+const Header = ({ param, showAdd, showAddTask, showGetTask, showGet}) => {
   // const onClick = (e) => {
   //   console.log(e);
   //   setShowAddTask();
@@ -24,7 +24,8 @@ const Header = ({ param, showAdd, showAddTask }) => {
   return (
     <header className="header">
       <h1>Task Manager {param}</h1>
-      <Button color={showAddTask ? "red" : "orange"} onClick={showAdd} btnName={ showAddTask ? "CLOSE" : "APPEND" } />
+      <Button color={showAddTask ? "red" : "orange"} onClick={showAdd} btnName={ showAddTask ? "CLOSE" : "ADD TASK" } />
+      <Button color={showGetTask ? "red" : "orange"} onClick={showGet} btnName={ showGetTask ? "CLOSE" : "GET TASK" } />
     </header>
   );
 };

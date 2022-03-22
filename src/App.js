@@ -5,11 +5,13 @@ import "./App.css";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
+import GetTask from "./components/GetTask";
 
 //function based component
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
+  const [showGetTask, setShowGetTask] = useState(false);
   const [tasks, setTasks] = useState([
     // {
     //   id: 1,
@@ -47,29 +49,41 @@ function App() {
   const fetchTasks = async () => {
     const res = await fetch("http://localhost:5000/tasks");
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     // data.then(d => console.log(d));
     return data;
   };
 
-  //set show add task
-  const showAdd = () => {
-    setShowAddTask(true);
+  //Fetch a single task(data) from server
+  const fetchTask = async (id) => {
+    // id = 2;
+    const res = await fetch(`http://localhost:5000/tasks/${id}`);
+    const data = await res.json();
+    console.log(data);
+    // data.then(d => console.log(d));
+    // return data;
   };
+  //set show add task
+  // const showAdd = () => {
+  //   setShowAddTask(true);
+  // };
 
+  //show Get Single Task
+  // const onGetTask = () => {
+  //   setShowGetTask(true);
+  // };
   //Add task
   const addTask = async (task) => {
     // const id = Math.floor(Math.random() * 10000) + 1;
     const res = await fetch(`http://localhost:5000/tasks`, {
       method: "POST",
       headers: {
-        'Content-Type' : 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(task),
-    })
-      .then(response => response.json())
-      // .then(data => {console.log(data)})
-      // .then(data => console.log(data))
+    }).then((response) => response.json());
+    // .then(data => {console.log(data)})
+    // .then(data => console.log(data))
     // const newTask = { id, ...task };
 
     //You can use the following statmeent of you don't use the first .then (response.json())
@@ -82,7 +96,6 @@ function App() {
     //the following console log doesnot display the added id
     //id is still indefined even though "it was set" by settasks
     // console.log(task);
-
   };
   // Delete a task
   const deleteTask = async (id) => {
@@ -116,10 +129,13 @@ function App() {
     <div className="container">
       <Header
         showAddTask={showAddTask}
+        showGetTask={showGetTask}
         showAdd={() => setShowAddTask(!showAddTask)}
+        showGet={() => setShowGetTask(!showGetTask)}
         param="Online Application"
       />
       {showAddTask && <AddTask onAdd={addTask} />}
+      {showGetTask && <GetTask onGetTask={fetchTask} />}
       <h2>Hello {salutation}</h2>
       {tasks.length > 0 ? (
         <Tasks
