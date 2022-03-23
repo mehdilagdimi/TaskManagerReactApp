@@ -57,9 +57,39 @@ function App() {
   //Fetch a single task(data) from server
   const fetchTask = async (id) => {
     // id = 2;
-    const res = await fetch(`http://localhost:5000/tasks/${id}`);
-    const data = await res.json();
-    console.log(data);
+    // const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    // await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    await fetch(`http://localhost:5000/tasks/${id}`)
+    .then((res)=> {
+    // .then((items) => console.log(items))
+      if(res.ok) { 
+        console.log('Fulfilled')
+        const getData = async () => {
+          const data = await res.json()
+          console.log(data)
+          return data
+        }
+        // return response 
+        const data = getData();
+        console.log(data);
+        // return response
+      }
+      })
+      // } else {
+      // throw new Error('Invalid ID');}
+    // .catch((e) => {
+    //   // return 0;
+    //   // console.log('Error msg', e)
+      
+    //   alert(e)  
+    // })
+    // res.catch(function(e) { 
+    //   console.log('Error')
+    // }) ;
+    // console.log(res.json());
+    // const data = await res.json();
+    // console.log("test")
+    // console.log(data);
     // data.then(d => console.log(d));
     // return data;
   };
@@ -108,10 +138,24 @@ function App() {
   };
 
   //task reminder toggler
-  const taskReminderToggle = (id) => {
+  const taskReminderToggle = async (id) => {
+    const taskToToggle = await fetchTask(id);
+    const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updTask),
+    })
+
+    const data = await res.json();
+
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
+        // ask.id === id ? { ...task, reminder: !task.reminder } : task
+        task.id === id ? { ...task, reminder: data.reminder } : task
       )
     );
     // reminder = !reminder$
