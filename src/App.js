@@ -66,7 +66,7 @@ function App() {
       if(res.ok) { 
 
         const data = await res.json();
-        // console.log(data);
+        console.log(git statdata);
         // return data;
         return data;  //important to return this response and then return it from functon
 
