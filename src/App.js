@@ -59,49 +59,28 @@ function App() {
     // id = 2;
     // const res = await fetch(`http://localhost:5000/tasks/${id}`)
     // await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-    await fetch(`http://localhost:5000/tasks/${id}`)
-    .then((res)=> {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    .then(async (res)=> {
     // .then((items) => console.log(items))
       if(res.ok) { 
-        console.log('Fulfilled')
-        const getData = async () => {
-          const data = await res.json()
-          console.log(data)
-          return data
-        }
-        // return response 
-        const data = getData();
-        console.log(data);
-        // return response
-      }
-      })
-      // } else {
-      // throw new Error('Invalid ID');}
-    // .catch((e) => {
-    //   // return 0;
-    //   // console.log('Error msg', e)
-      
-    //   alert(e)  
-    // })
-    // res.catch(function(e) { 
-    //   console.log('Error')
-    // }) ;
-    // console.log(res.json());
-    // const data = await res.json();
-    // console.log("test")
-    // console.log(data);
-    // data.then(d => console.log(d));
-    // return data;
-  };
-  //set show add task
-  // const showAdd = () => {
-  //   setShowAddTask(true);
-  // };
+         
+        console.log('Success')
 
-  //show Get Single Task
-  // const onGetTask = () => {
-  //   setShowGetTask(true);
-  // };
+        const data = await res.json();
+        console.log(data);
+        
+      } else {
+      throw new Error('Invalid ID');}
+    })
+    .catch((e) => {
+      // return 0;
+      console.log('Error msg', e)
+      alert(e)  
+    })
+
+  };
+  
+  
   //Add task
   const addTask = async (task) => {
     // const id = Math.floor(Math.random() * 10000) + 1;
