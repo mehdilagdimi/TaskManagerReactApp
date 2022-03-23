@@ -10,6 +10,7 @@ import GetTask from "./components/GetTask";
 //function based component
 
 function App() {
+  const salutation = "React";
   const [showAddTask, setShowAddTask] = useState(false);
   const [showGetTask, setShowGetTask] = useState(false);
   const [tasks, setTasks] = useState([
@@ -59,25 +60,26 @@ function App() {
     // id = 2;
     // const res = await fetch(`http://localhost:5000/tasks/${id}`)
     // await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-    const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    const data = await fetch(`http://localhost:5000/tasks/${id}`)
     .then(async (res)=> {
     // .then((items) => console.log(items))
       if(res.ok) { 
-         
-        console.log('Success')
 
         const data = await res.json();
-        console.log(data);
-        
+        // console.log(data);
+        // return data;
+        return data;  //important to return this response and then return it from functon
+
       } else {
       throw new Error('Invalid ID');}
     })
     .catch((e) => {
-      // return 0;
       console.log('Error msg', e)
       alert(e)  
     })
 
+    return data
+    // return res;
   };
   
   
@@ -118,36 +120,44 @@ function App() {
 
   //task reminder toggler
   const taskReminderToggle = async (id) => {
-    const taskToToggle = await fetchTask(id);
-    const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+    await fetchTask(id)
+    .then(async taskToToggle => {
+      // const taskToToggle = await res.json()
+       // console.log(res)
+      // console.log(taskToToggle)
+    
+      const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
 
-    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updTask),
+      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updTask),
+      })
+
+      const data = await res.json();
+      console.log(data)
+      setTasks(
+        tasks.map((task) =>
+          // task.id === id ? { ...task, reminder: !task.reminder } : task
+          task.id === id ? { ...task, reminder: data.reminder } : task
+        )
+      );
+
     })
 
-    const data = await res.json();
-
-    setTasks(
-      tasks.map((task) =>
-        // ask.id === id ? { ...task, reminder: !task.reminder } : task
-        task.id === id ? { ...task, reminder: data.reminder } : task
-      )
-    );
-    // reminder = !reminder$
-    {
-      tasks.forEach(
-        (task) =>
-          task.id === id &&
-          (console.log("Task id", task.id),
-          console.log("Task reminder state", task.reminder))
-      );
-    }
+    // {
+    //   tasks.forEach(
+    //     (task) =>
+    //       task.id === id &&
+    //       (console.log("Task id", task.id),
+    //       console.log("Task reminder state", task.reminder))
+    //   );
+    // }
   };
-  const salutation = "React";
+
+
   return (
     <div className="container">
       <Header
