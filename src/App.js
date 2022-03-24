@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+
 
 import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 import GetTask from "./components/GetTask";
+import About from "./components/About";
+import TaskDetails from "./components/TaskDetails";
+
 
 //function based component
 
@@ -14,27 +20,7 @@ function App() {
   const [showAddTask, setShowAddTask] = useState(false);
   const [showGetTask, setShowGetTask] = useState(false);
   const [tasks, setTasks] = useState([
-    // {
-    //   id: 1,
-    //   name: "Roche",
-    //   task: "task",
-    //   date: "date",
-    //   reminder: true,
-    // },
-    // {
-    //   id: 2,
-    //   name: "Roche2",
-    //   task: "task2",
-    //   date: "date2",
-    //   reminder: true,
-    // },
-    // {
-    //   id: 3,
-    //   name: "Roche3",
-    //   task: "task3",
-    //   date: "date3",
-    //   reminder: false,
-    // },
+
   ]);
 
   useEffect(() => {
@@ -66,7 +52,7 @@ function App() {
       if(res.ok) { 
 
         const data = await res.json();
-        console.log(git statdata);
+        console.log(data);
         // return data;
         return data;  //important to return this response and then return it from functon
 
@@ -93,9 +79,6 @@ function App() {
       },
       body: JSON.stringify(task),
     }).then((response) => response.json());
-    // .then(data => {console.log(data)})
-    // .then(data => console.log(data))
-    // const newTask = { id, ...task };
 
     //You can use the following statmeent of you don't use the first .then (response.json())
     // const data = await res.json();
@@ -104,9 +87,7 @@ function App() {
     console.log(res);
 
     setTasks([...tasks, res]);
-    //the following console log doesnot display the added id
-    //id is still indefined even though "it was set" by settasks
-    // console.log(task);
+
   };
   // Delete a task
   const deleteTask = async (id) => {
@@ -125,7 +106,6 @@ function App() {
       // const taskToToggle = await res.json()
        // console.log(res)
       // console.log(taskToToggle)
-    
       const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
 
       const res = await fetch(`http://localhost:5000/tasks/${id}`, {
@@ -159,27 +139,43 @@ function App() {
 
 
   return (
+    <Router>
     <div className="container">
       <Header
         showAddTask={showAddTask}
         showGetTask={showGetTask}
         showAdd={() => setShowAddTask(!showAddTask)}
         showGet={() => setShowGetTask(!showGetTask)}
-        param="Online Application"
+        param="Task Manager : Online Application"
       />
-      {showAddTask && <AddTask onAdd={addTask} />}
-      {showGetTask && <GetTask onGetTask={fetchTask} />}
-      <h2>Hello {salutation}</h2>
-      {tasks.length > 0 ? (
-        <Tasks
-          tasks={tasks}
-          onDelete={deleteTask}
-          onDClick={taskReminderToggle}
-        />
-      ) : (
-        "No task to display"
-      )}
+      <Routes>
+        <Route path='/' element={
+          <>
+    
+          {showAddTask && <AddTask onAdd={addTask} />}
+          {showGetTask && <GetTask onGetTask={fetchTask} />}
+          <h2>Hello {salutation}</h2>
+          {tasks.length > 0 ? (
+            <Tasks
+              tasks={tasks}
+              onDelete={deleteTask}
+              onDClick={taskReminderToggle}
+            />
+          ) : (
+            "No task to display"
+          )}
+          </>
+        } />
+    
+        {/* <Routes> */}
+        <Route path='/about' element={<About />} />
+        <Route path='/task/:id' element={<TaskDetails />} />
+          
+      </Routes>
+    <Footer />
     </div>
+    </Router>
+    
   );
 }
 

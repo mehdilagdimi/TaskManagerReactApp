@@ -3,7 +3,7 @@
     {
       "task": "Duis labore non atqu",
       "date": "Perspiciatis ipsa ",
-      "reminder": true,
+      "reminder": false,
       "id": 4
     },
     {
@@ -15,13 +15,13 @@
     {
       "task": "Illum et aut quibus",
       "date": "Deleniti dolor vel n",
-      "reminder": true,
+      "reminder": false,
       "id": 6
     },
     {
       "task": "Maxime pariatur Dol",
       "date": "Est nostrum nostrum",
-      "reminder": false,
+      "reminder": true,
       "id": 7
     }
   ]
