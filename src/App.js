@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -19,9 +18,7 @@ function App() {
   const salutation = "React";
   const [showAddTask, setShowAddTask] = useState(false);
   const [showGetTask, setShowGetTask] = useState(false);
-  const [tasks, setTasks] = useState([
-
-  ]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const getTasks = async () => {
